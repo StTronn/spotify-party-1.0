@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { Store } from "../Store";
 import styled from "styled-components";
 import {
   Flex,
@@ -61,7 +62,20 @@ const OverlayDesc = styled.div`
 `;
 //`
 
-const SongDisplay = ({ songInformation }: Props) => {
+const SongDisplay = () => {
+  const { state } = useContext(Store);
+  const { user, spotifyApi } = state;
+  console.log(state);
+  const [songInformation, setSongInformation] = useState();
+  useEffect(() => {
+    if (user) {
+      window.setInterval(() => {
+        spotifyApi.getMyCurrentPlaybackState().then((response) => {
+          setSongInformation(response);
+        });
+      }, 1000);
+    }
+  }, [user, spotifyApi]);
   if (songInformation)
     if (songInformation.item) {
       return (

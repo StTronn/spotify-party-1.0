@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
 import SongDisplay from "./components/SongDisplay";
 import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { Store } from "./Store";
 
 const spotifyApi = new SpotifyWebApi();
 function getHashParams() {
@@ -18,26 +19,18 @@ function getHashParams() {
 }
 
 function App() {
+  const { state, dispatch } = useContext(Store);
+  const { user } = state;
   const params = getHashParams();
-  const token = params.access_token;
+  const { access_token, username } = params;
+  const token = access_token;
+  if (username && !user) {
+    dispatch({ type: "SET_USER", payload: { username, token } });
+    dispatch({ type: "SET_TOKEN", payload: { token } });
+  }
   if (token) spotifyApi.setAccessToken(token);
-  const [loggedIn, setLoggedIn] = useState(token ? true : false);
-  const [songInformation, setSongInformation] = useState();
-  const [nowPlaying, setNowPlaying] = useState({
-    name: "Not Checked",
-    albumArt: "",
-  });
-  useEffect(() => {
-    window.setInterval(() => {
-      spotifyApi.getMyCurrentPlaybackState().then((response) => {
-        console.log(response);
+  const loggedIn = token ? true : false;
 
-        setSongInformation(response);
-      });
-    }, 1000);
-  }, []);
-
-  console.log(params);
   if (!loggedIn) {
     return (
       <ThemeProvider>
@@ -53,7 +46,7 @@ function App() {
       <ThemeProvider>
         <div style={{ display: "grid" }}>
           <CSSReset />
-          <SongDisplay songInformation={songInformation} />
+          <SongDisplay />
         </div>
       </ThemeProvider>
     );

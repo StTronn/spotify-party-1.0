@@ -1,11 +1,11 @@
 import { Router } from "express"; // Express web server framework
 const router = Router();
 
+import User from "../models/user"; // "Request" library
 import querystring from "querystring"; // "Request" library
 import request from "request"; // "Request" library
-
-var client_id = process.env.CLIENT_ID; // Your client id
-var client_secret = process.env.CLIENT_SECRET; // Your secret
+var client_id = "3644941566b1453299ab48681726e52f"; // Your client id
+var client_secret = "f8a09652cad24e888c8dc7a47382b576"; // Your secret
 var redirect_uri = "http://localhost:8888/callback"; // Your redirect uri
 
 /**
@@ -44,7 +44,7 @@ router.get("/login", function (req, res) {
   );
 });
 
-router.get("/callback", function (req, res) {
+router.get("/callback", async (req, res) => {
   // your application requests refresh and access tokens
   // after checking the state parameter
 
@@ -86,20 +86,26 @@ router.get("/callback", function (req, res) {
           headers: { Authorization: "Bearer " + access_token },
           json: true,
         };
-
         // use the access token to access the Spotify Web API
         request.get(options, function (error, response, body) {
           console.log(body);
-        });
+          const user = new User({
+            name: body.id,
+            href: body.href,
+            access_token,
+            refresh_token,
+          }).save();
 
-        // we can also pass the token to the browser to make requests from there
-        res.redirect(
-          "http://localhost:3000/#" +
-            querystring.stringify({
-              access_token: access_token,
-              refresh_token: refresh_token,
-            })
-        );
+          // we can also pass the token to the browser to make requests from there
+          res.redirect(
+            "http://localhost:3000/#" +
+              querystring.stringify({
+                access_token: access_token,
+                refresh_token: refresh_token,
+                username: body.id,
+              })
+          );
+        });
       } else {
         res.redirect(
           "http:localhost:3000/#" +
