@@ -13,7 +13,6 @@ const initialState = {
 };
 
 function reducer(state, action) {
-  console.log("reducer");
   switch (action.type) {
     case "SET_USER":
       return { ...state, user: action.payload };

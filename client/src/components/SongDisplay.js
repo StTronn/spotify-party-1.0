@@ -65,7 +65,6 @@ const OverlayDesc = styled.div`
 const SongDisplay = () => {
   const { state } = useContext(Store);
   const { user, spotifyApi } = state;
-  console.log(state);
   const [songInformation, setSongInformation] = useState();
   useEffect(() => {
     if (user) {
