@@ -9,65 +9,94 @@
 
 import express from "express";
 import cors from "cors";
+import { v4 as uuidv4 } from "uuid";
 import cookieParser from "cookie-parser";
 import auth from "./routes/auth";
-import http from "http";
+import User from "./models/user";
+import Room from "./models/room";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import socketio from "socket.io";
+const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
 dotenv.config();
 console.log(process.env.CLIENT_ID + "");
 
 const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
+
+app
+  .use(express.static(__dirname + "/public"))
+  .use(cors())
+  .use(cookieParser());
+
+let server = app.listen(8888);
+var io = socketio.listen(server);
 
 //socket
-io.on("connection", (socket) => {
-  socket.on("joinRoom", ({ username, room }) => {
-    const user = userJoin(socket.id, username, room);
-
-    socket.join(user.room);
-
-    // Welcome current user
-    socket.emit("message", formatMessage(botName, "Welcome to ChatCord!"));
-
-    // Broadcast when a user connects
-    socket.broadcast
-      .to(user.room)
-      .emit(
-        "message",
-        formatMessage(botName, `${user.username} has joined the chat`)
-      );
-
-    // Send users and room info
-    io.to(user.room).emit("roomUsers", {
-      room: user.room,
-      users: getRoomUsers(user.room),
+io.on("connect", (socket) => {
+  socket.on("createRoom", async (user, callback) => {
+    //check instead in session
+    console.log(user);
+    const findUser = await User.findOne({
+      name: user.username,
     });
+    if (findUser) {
+      const link = uuidv4();
+      await new Room({
+        link,
+        users: [user],
+      }).save();
+      console.log("created room");
+      socket.emit("joinLink", { link });
+    }
   });
 
-  // Listen for chatMessage
-  socket.on("chatMessage", (msg) => {
-    const user = getCurrentUser(socket.id);
+  socket.on("join", async ({ name, room }, callback) => {
+    const findUser = await User.findOne({
+      name: name,
+    });
+    const findRoom = await Room.findOne({
+      link: room,
+    });
+    const { error, user } = addUser({ id: socket.id, name, room });
 
-    io.to(user.room).emit("message", formatMessage(user.username, msg));
+    if (error) return callback(error);
+    if (findUser && findRoom) {
+      console.log("hello room");
+      socket.join(room);
+
+      socket.emit("message", {
+        user: "admin",
+        text: `${name}, welcome to room ${room}.`,
+      });
+      socket.broadcast
+        .to(room)
+        .emit("message", { user: "admin", text: `${name} has joined!` });
+
+      io.to(room).emit("roomData", {
+        room: room,
+        users: getUsersInRoom(user.room),
+      });
+    } else return callback(error);
+    callback();
   });
 
-  // Runs when client disconnects
+  socket.on("sendMessage", ({ userId, roomId, message }, callback) => {
+    io.to(roomId).emit("message", { user: userId, text: message });
+
+    callback();
+  });
+
   socket.on("disconnect", () => {
-    const user = userLeave(socket.id);
+    const user = removeUser(socket.id);
 
     if (user) {
-      io.to(user.room).emit(
-        "message",
-        formatMessage(botName, `${user.username} has left the chat`)
-      );
-
-      // Send users and room info
-      io.to(user.room).emit("roomUsers", {
+      io.to(user.room).emit("message", {
+        user: "Admin",
+        text: `${user.name} has left.`,
+      });
+      io.to(user.room).emit("roomData", {
         room: user.room,
-        users: getRoomUsers(user.room),
+        users: getUsersInRoom(user.room),
       });
     }
   });
@@ -89,12 +118,6 @@ mongoose
   })
   .catch((err) => console.log(`Error connecting to MongoDB: ${err}`));
 
-app
-  .use(express.static(__dirname + "/public"))
-  .use(cors())
-  .use(cookieParser());
-
 app.use("", auth);
 
 console.log("Listening on 8888");
-app.listen(8888);

@@ -89,12 +89,21 @@ router.get("/callback", async (req, res) => {
         // use the access token to access the Spotify Web API
         request.get(options, function (error, response, body) {
           console.log(body);
-          const user = new User({
-            name: body.id,
-            href: body.href,
-            access_token,
-            refresh_token,
-          }).save();
+          var options = { upsert: true, new: true, setDefaultsOnInsert: true };
+          const user = User.findOneAndUpdate(
+            { name: body.id },
+            {
+              name: body.id,
+              href: body.href,
+              access_token,
+              refresh_token,
+            },
+            options,
+            (err, doc) => {
+              if (err) console.log(err);
+              console.log(doc);
+            }
+          );
 
           // we can also pass the token to the browser to make requests from there
           res.redirect(

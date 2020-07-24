@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import SongDisplay from "./components/SongDisplay";
-import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+import PrivateRoute from "./components/PrivateRoute";
+import Chat from "./components/Chat";
+import Room from "./components/Room";
+import Login from "./components/Login";
 import { Store } from "./Store";
 
 const spotifyApi = new SpotifyWebApi();
@@ -20,36 +24,34 @@ function getHashParams() {
 
 function App() {
   const { state, dispatch } = useContext(Store);
-  const { user } = state;
+  const [user, setUser] = useState(state.user);
   const params = getHashParams();
   const { access_token, username } = params;
   const token = access_token;
-  if (username && !user) {
-    dispatch({ type: "SET_USER", payload: { username, token } });
-    dispatch({ type: "SET_TOKEN", payload: { token } });
+  useEffect(() => {
+    if (token && username && !user) {
+      dispatch({ type: "SET_USER", payload: { username, token } });
+      dispatch({ type: "SET_TOKEN", payload: { token } });
+    }
+    if (token) spotifyApi.setAccessToken(token);
+  }, []);
+  if (token && user && !user) {
+    setUser({ username, token });
   }
-  if (token) spotifyApi.setAccessToken(token);
-  const loggedIn = token ? true : false;
-
-  if (!loggedIn) {
-    return (
-      <ThemeProvider>
-        <div className="App">
-          <CSSReset />
-          <a href="http://localhost:8888/login"> Login to Spotify </a>
-        </div>
-      </ThemeProvider>
-    );
-  }
-  if (loggedIn)
-    return (
-      <ThemeProvider>
-        <div style={{ display: "grid" }}>
-          <CSSReset />
-          <SongDisplay />
-        </div>
-      </ThemeProvider>
-    );
+  if (!user) return <Login />;
+  return (
+    <>
+      <Router>
+        <Switch>
+          <Route path="/focus" component={SongDisplay} />
+          <Route path="/login" component={Login} />
+          <Route path="/room" component={Room} />
+          <Route path="/chat" component={Chat} />
+          <Route exact path="/" component={Chat} />
+        </Switch>
+      </Router>
+    </>
+  );
 }
 
 export default App;

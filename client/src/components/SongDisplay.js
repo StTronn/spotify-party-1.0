@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Store } from "../Store";
 import styled from "styled-components";
 import {
-  Flex,
   Stack,
   Heading,
   Image,
@@ -78,7 +77,7 @@ const SongDisplay = () => {
   if (songInformation)
     if (songInformation.item) {
       return (
-        <>
+        <div style={{ display: "grid" }}>
           <Cointainer>
             <ImageHolder>
               <Blurred>
@@ -149,20 +148,22 @@ const SongDisplay = () => {
               </Stack>
             </div>
           </Cointainer>
-        </>
+        </div>
       );
     }
   return (
-    <Stack spacing={10} align="center" mt={10}>
-      <Spinner size="lg" />
-      <Text>
-        If you haven't started to play a song yet, please do that now.
-        Otherwise, you may be looking at this loading spinner for quite awhile{" "}
-        <span role="img" aria-label="wink">
-          😉
-        </span>
-      </Text>
-    </Stack>
+    <div style={{ display: "grid" }}>
+      <Stack spacing={10} align="center" mt={10}>
+        <Spinner size="lg" />
+        <Text>
+          If you haven't started to play a song yet, please do that now.
+          Otherwise, you may be looking at this loading spinner for quite awhile{" "}
+          <span role="img" aria-label="wink">
+            😉
+          </span>
+        </Text>
+      </Stack>
+    </div>
   );
 };
 
