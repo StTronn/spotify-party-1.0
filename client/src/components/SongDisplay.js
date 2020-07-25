@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Store } from "../Store";
 import styled from "styled-components";
 import {
   Stack,
@@ -61,19 +60,7 @@ const OverlayDesc = styled.div`
 `;
 //`
 
-const SongDisplay = () => {
-  const { state } = useContext(Store);
-  const { user, spotifyApi } = state;
-  const [songInformation, setSongInformation] = useState();
-  useEffect(() => {
-    if (user) {
-      window.setInterval(() => {
-        spotifyApi.getMyCurrentPlaybackState().then((response) => {
-          setSongInformation(response);
-        });
-      }, 1000);
-    }
-  }, [user, spotifyApi]);
+const SongDisplay = ({ songInformation }) => {
   if (songInformation)
     if (songInformation.item) {
       return (

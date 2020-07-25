@@ -91,9 +91,10 @@ router.get("/callback", async (req, res) => {
           console.log(body);
           var options = { upsert: true, new: true, setDefaultsOnInsert: true };
           const user = User.findOneAndUpdate(
-            { name: body.id },
+            { id: body.id },
             {
-              name: body.id,
+              id: body.id,
+              username: body.display_name,
               href: body.href,
               access_token,
               refresh_token,
@@ -111,7 +112,8 @@ router.get("/callback", async (req, res) => {
               querystring.stringify({
                 access_token: access_token,
                 refresh_token: refresh_token,
-                username: body.id,
+                username: body.display_name,
+                id: body.id,
               })
           );
         });

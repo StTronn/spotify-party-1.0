@@ -40,7 +40,16 @@ io.on("connect", (socket) => {
       name: user.username,
     });
     if (findUser) {
-      const link = uuidv4();
+      let link;
+
+      let findRoom;
+      do {
+        link = uuidv4();
+        findRoom = await Room.findOne({
+          link: room,
+        });
+      } while (findRoom);
+
       await new Room({
         link,
         users: [user],
@@ -50,16 +59,17 @@ io.on("connect", (socket) => {
     }
   });
 
-  socket.on("join", async ({ name, room }, callback) => {
+  socket.on("join", async ({ user, room }, callback) => {
+    const { username, id } = user;
+    const name = username;
+    addUser({ id: socket.id, name, room });
     const findUser = await User.findOne({
-      name: name,
+      id: id,
     });
     const findRoom = await Room.findOne({
       link: room,
     });
-    const { error, user } = addUser({ id: socket.id, name, room });
 
-    if (error) return callback(error);
     if (findUser && findRoom) {
       console.log("hello room");
       socket.join(room);
@@ -74,10 +84,9 @@ io.on("connect", (socket) => {
 
       io.to(room).emit("roomData", {
         room: room,
-        users: getUsersInRoom(user.room),
+        users: [],
       });
-    } else return callback(error);
-    callback();
+    } else callback({ ok: false, msg: "cannot find room" });
   });
 
   socket.on("sendMessage", ({ userId, roomId, message }, callback) => {
@@ -86,9 +95,13 @@ io.on("connect", (socket) => {
     callback();
   });
 
+  socket.on("sendPlaybackState", ({ newPlaybackObj, roomId }, callback) => {
+    io.to(roomId).emit("playbackState", newPlaybackObj);
+
+    callback();
+  });
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
-
     if (user) {
       io.to(user.room).emit("message", {
         user: "Admin",

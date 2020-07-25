@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import SongDisplay from "./components/SongDisplay";
+import Focus from "./components/Focus";
 import PrivateRoute from "./components/PrivateRoute";
 import Chat from "./components/Chat";
 import Room from "./components/Room";
@@ -26,11 +26,11 @@ function App() {
   const { state, dispatch } = useContext(Store);
   const [user, setUser] = useState(state.user);
   const params = getHashParams();
-  const { access_token, username } = params;
+  const { access_token, username, id } = params;
   const token = access_token;
   useEffect(() => {
     if (token && username && !user) {
-      dispatch({ type: "SET_USER", payload: { username, token } });
+      dispatch({ type: "SET_USER", payload: { username, token, id } });
       dispatch({ type: "SET_TOKEN", payload: { token } });
     }
     if (token) spotifyApi.setAccessToken(token);
@@ -43,7 +43,7 @@ function App() {
     <>
       <Router>
         <Switch>
-          <Route path="/focus" component={SongDisplay} />
+          <Route path="/focus" component={Focus} />
           <Route path="/login" component={Login} />
           <Route path="/room" component={Room} />
           <Route path="/chat" component={Chat} />
