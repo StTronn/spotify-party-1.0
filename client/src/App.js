@@ -5,6 +5,7 @@ import Focus from "./components/Focus";
 import PrivateRoute from "./components/PrivateRoute";
 import Chat from "./components/Chat";
 import Room from "./components/Room";
+import Proto from "./components/Proto";
 import Login from "./components/Login";
 import { Store } from "./Store";
 
@@ -47,7 +48,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/room" component={Room} />
           <Route path="/chat" component={Chat} />
-          <Route exact path="/" component={Chat} />
+          <Route exact path="/" component={Proto} />
         </Switch>
       </Router>
     </>

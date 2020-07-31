@@ -117,21 +117,6 @@ const SongDisplay = ({ songInformation }) => {
                       }`
                   )}
                 </Text>
-                <Slider
-                  color={"green"}
-                  min={0}
-                  max={songInformation.item.duration_ms / 1000}
-                  value={
-                    songInformation.progress_ms
-                      ? songInformation.progress_ms / 1000
-                      : 0
-                  }
-                  maxW={"100%"}
-                >
-                  <SliderTrack />
-                  <SliderFilledTrack />
-                  <SliderThumb size={4} />
-                </Slider>
               </Stack>
             </div>
           </Cointainer>
