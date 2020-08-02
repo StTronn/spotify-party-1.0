@@ -25,7 +25,7 @@ const Proto = () => {
           <main className="flex flex-col h-full w-3/4 xl:w-6/8 bg-sp-gray-light text-white">
             <Content></Content>
           </main>
-          <aside className="h-full w-1/4 xl:w-2/8 bg-black text-white">
+          <aside className="h-full w-1/4 xl:w-2/8 bg-black text-white overflow-y-auto">
             <Chat />
           </aside>
         </div>

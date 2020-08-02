@@ -61,6 +61,7 @@ const OverlayDesc = styled.div`
 //`
 
 const SongDisplay = ({ songInformation }) => {
+  console.log("songInformation", songInformation);
   if (songInformation)
     if (songInformation.item) {
       return (

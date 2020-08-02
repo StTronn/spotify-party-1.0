@@ -1,13 +1,20 @@
 import React from "react";
+import Message from "./Message";
 
-const ChatProto = () => {
+const ChatProto = ({ messages, message, setMessage, sendMessage }) => {
+  console.log("messages", messages);
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      sendMessage(e);
+    }
+  };
   return (
     <div>
-      <div style={{ overscrollBehavior: "none" }}>
+      <div>
         {/* HEADING */}
         <div
-          className=" bg-sp-gray-dark  h-16 text-center pt-2 text-white flex justify-between "
-          style={{ top: "0px", overscrollBehavior: "none" }}
+          className=" bg-sp-gray-dark  h-16 w-1/4 xl:w-2/8 text-center pt-2 text-white flex justify-between "
+          style={{ top: "0px", position: "fixed" }}
         >
           {/* back button */}
           <span className="mx-auto my-3 text-white text-center font-bold text-lg ">
@@ -16,19 +23,10 @@ const ChatProto = () => {
           {/* 3 dots */}
         </div>
         {/* MESSAGES */}
-        <div className="mt-20 mb-16">
-          {/* SINGLE MESSAGE */}
-          <div className="clearfix">
-            <div className="bg-sp-gray-light w-3/4 mx-4 my-2 p-2 rounded-lg">
-              Tell me Why?
-            </div>
-          </div>
-
-          <div className="clearfix">
-            <div className="bg-sp-gray-light w-3/4 mx-4 my-2 p-2 rounded-lg">
-              Ain't nothing but a mistake
-            </div>
-          </div>
+        <div className="mt-20 mb-16 h-50 overflow-auto">
+          {messages.map((item, i) => (
+            <Message message={item} key={i} />
+          ))}
         </div>
       </div>
       {/* MESSAGE INPUT AREA */}
@@ -36,12 +34,17 @@ const ChatProto = () => {
         className="flex absolute w-1/4 xl:w-2/8  bg-sp-gray-light items-center border-b-2 border-sp-green py-2"
         style={{ bottom: "0px" }}
       >
-        <textarea
+        <input
           className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
           rows={1}
-          placeholder="Message..."
+          placeholder="say something"
           style={{ outline: "none" }}
           defaultValue={""}
+          value={message}
+          onChange={(e) => {
+            setMessage(e.target.value);
+          }}
+          onKeyDown={handleEnter}
         />
       </div>
     </div>
