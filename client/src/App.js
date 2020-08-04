@@ -1,11 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
+import moment from "moment";
 import SpotifyWebApi from "spotify-web-api-js";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useHistory,
+} from "react-router-dom";
 import Focus from "./components/Focus";
 import PrivateRoute from "./components/PrivateRoute";
 import Room from "./components/Room";
 import RoomJoin from "./components/RoomJoin";
-import Proto from "./components/Proto";
 import Login from "./components/Login";
 import { Store } from "./Store";
 import "./App.css";
@@ -30,10 +35,21 @@ function App() {
   const params = getHashParams();
   const { access_token, username, id } = params;
   const token = access_token;
+  const history = useHistory();
   useEffect(() => {
-    if (token && username && !user) {
-      dispatch({ type: "SET_USER", payload: { username, token, id } });
+    if (token && username && !user && moment(user.expires_in) < moment()) {
+      const time = moment().add(1, "hour");
+      dispatch({
+        type: "SET_USER",
+        payload: {
+          username,
+          token,
+          id,
+          expires_in: time,
+        },
+      });
       dispatch({ type: "SET_TOKEN", payload: { token } });
+      history.push(`/`);
     }
     if (token) spotifyApi.setAccessToken(token);
   }, []);
@@ -49,7 +65,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/roomjoin" component={RoomJoin} />
           <Route path="/room" component={Room} />
-          <Route exact path="/" component={Proto} />
+          <Route exact path="/" component={Room} />
         </Switch>
       </Router>
     </>

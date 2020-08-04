@@ -79,7 +79,8 @@ router.get("/callback", async (req, res) => {
     request.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token,
-          refresh_token = body.refresh_token;
+          refresh_token = body.refresh_token,
+          expires_in = body.expires_in;
 
         var options = {
           url: "https://api.spotify.com/v1/me",
@@ -111,6 +112,7 @@ router.get("/callback", async (req, res) => {
             "http://localhost:3000/#" +
               querystring.stringify({
                 access_token: access_token,
+                expires_in,
                 refresh_token: refresh_token,
                 username: body.display_name,
                 id: body.id,

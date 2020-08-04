@@ -39,7 +39,7 @@ const Room = ({ location }) => {
       spotifyApi.getMyCurrentPlaybackState().then((response) => {
         const newPlaybackObj = { [user.id]: response };
         socket.emit("sendPlaybackState", { newPlaybackObj, roomId: room }, () =>
-          console.log(response)
+          console.log("sendPlaybackState")
         );
       });
     }, 8000);
@@ -71,7 +71,6 @@ const Room = ({ location }) => {
       );
     }
   };
-  console.log(playbackObj);
   return (
     <div className="outerContainer">
       <div className="max-w-full w-full h-screen overflow-hidden">
