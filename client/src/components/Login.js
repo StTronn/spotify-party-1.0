@@ -43,7 +43,7 @@ const Login = () => {
             <span className="text-white">with anyone anywhere</span>
           </h2>
           <p className="mt-3 text-base text-white sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-            Grab some peeps and create a virtual lounge where you can chat see
+            Grab some peeps and create a virtual lounge where you can chat, see
             and play what others are playing.
           </p>
           <LoginButton className="bg-sp-green mt-8 pt-1 text-base leading-6 font-medium text-white rounded-full text-center">
