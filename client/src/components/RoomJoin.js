@@ -4,6 +4,7 @@ import { Store } from "../Store";
 import styled from "styled-components";
 import queryString from "query-string";
 import io from "socket.io-client";
+import { FaPlusCircle, FaUserPlus } from "react-icons/fa";
 
 const CardCointainer = styled.div`
   display: grid;
@@ -59,9 +60,9 @@ const RoomJoin = () => {
                     <div className="font-bold text-3xl text-sp-green mb-2">
                       Join Room
                     </div>
-                    <p className="text-base">
-                      Altos estandares de bioseguridad
-                    </p>
+                    <div className="grid justify-center text-sp-green">
+                      <FaUserPlus size={32} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -69,7 +70,7 @@ const RoomJoin = () => {
           </div>
           <div className="p-8 sm:p-8 text-center cursor-pointer translate-x-2">
             <div
-              className="py-40 max-w-sm mx-auto rounded overflow-hidden bg-sp-gray-light shadow-lg hover:bg-white transition duration-500 text-white  "
+              className="py-40 max-w-sm mx-auto rounded overflow-hidden bg-sp-gray-light shadow-lg hover:bg-sp-gray-highlight transition duration-500 text-white  "
               style={{ borderRadius: "10px" }}
             >
               <div className="space-y-10">
@@ -77,7 +78,9 @@ const RoomJoin = () => {
                 <div className="px-6 py-2">
                   <div className="space-y-3">
                     <div className="font-bold text-3xl mb-2 ">Create Room</div>
-                    <p className=" text-base">Piscina temperada</p>
+                    <div className="grid justify-center">
+                      <FaPlusCircle size={32} />
+                    </div>
                   </div>
                 </div>
               </div>
