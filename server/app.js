@@ -35,9 +35,8 @@ var io = socketio.listen(server);
 io.on("connect", (socket) => {
   socket.on("createRoom", async (user, callback) => {
     //check instead in session
-    console.log(user);
     const findUser = await User.findOne({
-      name: user.username,
+      id: user.id,
     });
     if (findUser) {
       let link;
@@ -46,7 +45,7 @@ io.on("connect", (socket) => {
       do {
         link = uuidv4();
         findRoom = await Room.findOne({
-          link: room,
+          link,
         });
       } while (findRoom);
 

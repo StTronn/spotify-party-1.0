@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { Store } from "../Store";
 import styled from "styled-components";
+import RoomLinkModal from "./RoomLinkModal";
 import queryString from "query-string";
 import io from "socket.io-client";
 import { FaPlusCircle, FaUserPlus } from "react-icons/fa";
@@ -15,6 +16,8 @@ let socket;
 
 const RoomJoin = () => {
   const history = useHistory();
+
+  const [modalIsOpen, setIsOpen] = React.useState(false);
   const { state } = useContext(Store);
   const { user } = state;
   console.log(user);
@@ -23,15 +26,23 @@ const RoomJoin = () => {
     socket = io(ENDPOINT);
   }, []);
 
+  const openModal = () => {
+    setIsOpen(true);
+    console.log(modalIsOpen);
+  };
+  const joinRoom = () => {};
+
   const createRoom = () => {
     socket.emit("createRoom", user, () => console.log(user));
   };
+
   useEffect(() => {
     socket.on("joinLink", ({ link }) => {
       console.log(link);
-      history.push(`/chat/?room=${link}`);
+      history.push(`/room?room=${link}`);
     });
   });
+
   return (
     <div className="bg-sp-gray-dark">
       <div
@@ -47,6 +58,7 @@ const RoomJoin = () => {
         <div className="mx-40 grid grid-cols-2 gap-2 px-auto sm:grid-cols-2">
           <div className="p-8 sm:p-8 text-center cursor-pointer text-white">
             <div
+              onClick={openModal}
               className="py-40 max-w-sm mx-auto rounded overflow-hidden shadow-lg bg-sp-gray-light hover:bg-sp-gray-highlight transition duration-500"
               style={{ borderRadius: "10px", width: "" }}
             >
@@ -70,6 +82,7 @@ const RoomJoin = () => {
           </div>
           <div className="p-8 sm:p-8 text-center cursor-pointer translate-x-2">
             <div
+              onClick={createRoom}
               className="py-40 max-w-sm mx-auto rounded overflow-hidden bg-sp-gray-light shadow-lg hover:bg-sp-gray-highlight transition duration-500 text-white  "
               style={{ borderRadius: "10px" }}
             >
@@ -88,6 +101,7 @@ const RoomJoin = () => {
           </div>
         </div>
       </div>
+      <RoomLinkModal modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

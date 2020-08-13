@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import moment from "moment";
 import SpotifyWebApi from "spotify-web-api-js";
+import { createBrowserHistory } from "history";
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -31,13 +33,16 @@ function getHashParams() {
 
 function App() {
   const { state, dispatch } = useContext(Store);
-  const [user, setUser] = useState(state.user);
+  const { user } = state;
   const params = getHashParams();
   const { access_token, username, id } = params;
   const token = access_token;
-  const history = useHistory();
   useEffect(() => {
-    if (token && username && !user && moment(user.expires_in) < moment()) {
+    console.log(user.expires_in > moment());
+    if (user && moment(user.expires_in) < moment()) {
+      localStorage.removeItem("user");
+    }
+    if (token && username && !user) {
       const time = moment().add(1, "hour");
       dispatch({
         type: "SET_USER",
@@ -49,13 +54,9 @@ function App() {
         },
       });
       dispatch({ type: "SET_TOKEN", payload: { token } });
-      history.push(`/`);
     }
     if (token) spotifyApi.setAccessToken(token);
   }, []);
-  if (token && user && !user) {
-    setUser({ username, token });
-  }
   if (!user) return <Login />;
   return (
     <>
