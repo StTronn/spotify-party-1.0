@@ -18,6 +18,7 @@ const RoomJoin = () => {
   const history = useHistory();
 
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [link, setLink] = React.useState("");
   const { state } = useContext(Store);
   const { user } = state;
   console.log(user);
@@ -30,7 +31,10 @@ const RoomJoin = () => {
     setIsOpen(true);
     console.log(modalIsOpen);
   };
-  const joinRoom = () => {};
+  const joinRoom = () => {
+    console.log("joinRoom");
+    socket.emit("join", { user, room: link }, () => console.log(user));
+  };
 
   const createRoom = () => {
     socket.emit("createRoom", user, () => console.log(user));
@@ -101,7 +105,13 @@ const RoomJoin = () => {
           </div>
         </div>
       </div>
-      <RoomLinkModal modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
+      <RoomLinkModal
+        modalIsOpen={modalIsOpen}
+        setIsOpen={setIsOpen}
+        link={link}
+        setLink={setLink}
+        joinRoom={joinRoom}
+      />
     </div>
   );
 };

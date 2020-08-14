@@ -66,7 +66,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/roomjoin" component={RoomJoin} />
           <Route path="/room" component={Room} />
-          <Route exact path="/" component={Room} />
+          <Route exact path="/" component={RoomJoin} />
         </Switch>
       </Router>
     </>

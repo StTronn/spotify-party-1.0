@@ -16,7 +16,7 @@ const customStyles = {
     color: "white",
     height: "50vh",
     borderRadius: "10px",
-    width: "35vw",
+    width: "25vw",
     top: "50%",
     left: "50%",
     right: "auto",
@@ -28,13 +28,7 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-const RoomLinkModal = ({ modalIsOpen, setIsOpen }) => {
-  var subtitle;
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-  }
-
+const RoomLinkModal = ({ modalIsOpen, setIsOpen, link, setLink, joinRoom }) => {
   function closeModal() {
     setIsOpen(false);
   }
@@ -43,7 +37,6 @@ const RoomLinkModal = ({ modalIsOpen, setIsOpen }) => {
     <div>
       <Modal
         isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
@@ -53,6 +46,10 @@ const RoomLinkModal = ({ modalIsOpen, setIsOpen }) => {
         </span>
         <span className="flex items-center border-b border-sp-green py-2">
           <input
+            value={link}
+            onChange={(e) => {
+              setLink(e.target.value);
+            }}
             className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
             type="text"
             placeholder="Enter link of room"
@@ -62,8 +59,9 @@ const RoomLinkModal = ({ modalIsOpen, setIsOpen }) => {
         <div style={{ justifySelf: "center" }}>
           <LoginButton className="bg-sp-green mt-8 pt-1 text-base leading-6 font-medium text-white rounded-full text-center">
             <a
+              onClick={joinRoom}
               className="w-full flex items-center justify-center"
-              href="http://localhost:8888/login"
+              href="/#"
             >
               Join Room{" "}
             </a>

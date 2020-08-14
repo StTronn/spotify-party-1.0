@@ -73,6 +73,7 @@ io.on("connect", (socket) => {
       console.log("hello room");
       socket.join(room);
 
+      socket.emit("joinLink", { link: room });
       socket.emit("message", {
         user: "admin",
         text: `${name}, welcome to room ${room}.`,
