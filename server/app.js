@@ -39,58 +39,53 @@ io.on("connect", (socket) => {
       id: user.id,
     });
     if (findUser) {
-      let link;
+      let findRoom = await Room.findOne({
+        roomId: user.id,
+      });
+      if (!findRoom) {
+        await new Room({
+          roomId: user.id,
+          users: [user],
+        }).save();
 
-      let findRoom;
-      do {
-        link = uuidv4();
-        findRoom = await Room.findOne({
-          link,
-        });
-      } while (findRoom);
-
-      await new Room({
-        link,
-        users: [user],
-      }).save();
-      console.log("created room");
-      socket.emit("joinLink", { link });
+        console.log("created room");
+      }
+      socket.emit("joinLink", { roomId: user.id });
     }
   });
 
-  socket.on("join", async ({ user, room }, callback) => {
+  socket.on("join", async ({ user, roomId }, callback) => {
     const { username, id } = user;
     const name = username;
-    addUser({ id: socket.id, name, room });
     const findUser = await User.findOne({
       id: id,
     });
     const findRoom = await Room.findOne({
-      link: room,
+      roomId,
     });
 
     if (findUser && findRoom) {
       console.log("hello room");
-      socket.join(room);
+      socket.join(roomId);
 
-      socket.emit("joinLink", { link: room });
+      socket.emit("joinLink", { roomId });
       socket.emit("message", {
         user: "admin",
-        text: `${name}, welcome to room ${room}.`,
+        text: `${name}, welcome to ${user.username}'s room .`,
       });
       socket.broadcast
-        .to(room)
+        .to(roomId)
         .emit("message", { user: "admin", text: `${name} has joined!` });
 
-      io.to(room).emit("roomData", {
-        room: room,
+      io.to(roomId).emit("roomData", {
+        room: roomId,
         users: [],
       });
     } else callback({ ok: false, msg: "cannot find room" });
   });
 
-  socket.on("sendMessage", ({ userId, roomId, message }, callback) => {
-    io.to(roomId).emit("message", { user: userId, text: message });
+  socket.on("sendMessage", ({ username, roomId, message }, callback) => {
+    io.to(roomId).emit("message", { username, text: message });
 
     callback();
   });

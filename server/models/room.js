@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const RoomSchema = new Schema({
-  link: String,
+  roomId: String,
   users: [Schema.Types.Mixed],
 });
 

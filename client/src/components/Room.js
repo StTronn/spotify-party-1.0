@@ -11,24 +11,24 @@ let socket;
 const Room = ({ location }) => {
   const { state } = useContext(Store);
   const { user, spotifyApi } = state;
-  const [room, setRoom] = useState("");
+  const [roomId, setRoomId] = useState("");
   const [users, setUsers] = useState("");
   const [playbackObj, setPlaybackObj] = useState({});
-  const [name, setName] = useState("");
+  const [username, setUserName] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const ENDPOINT = "http://localhost:8888/";
 
   useEffect(() => {
     const parse = queryString.parse(location.search);
-    const name = user.username || "tronn007";
-    const room = parse.room || "All";
+    const username = user.username || "tronn007";
+    const roomId = parse.roomId || "All";
     socket = io(ENDPOINT);
 
-    setRoom(room);
-    setName(name);
+    setRoomId(roomId);
+    setUserName(username);
 
-    socket.emit("join", { user, room }, (error) => {
+    socket.emit("join", { user, roomId }, (error) => {
       if (error) {
         alert(error);
       }
@@ -38,8 +38,10 @@ const Room = ({ location }) => {
     window.setInterval(() => {
       spotifyApi.getMyCurrentPlaybackState().then((response) => {
         const newPlaybackObj = { [user.id]: response };
-        socket.emit("sendPlaybackState", { newPlaybackObj, roomId: room }, () =>
-          console.log("sendPlaybackState")
+        socket.emit(
+          "sendPlaybackState",
+          { newPlaybackObj, roomId: roomId },
+          () => console.log("")
         );
       });
     }, 8000);
@@ -66,7 +68,7 @@ const Room = ({ location }) => {
     event.preventDefault();
 
     if (message) {
-      socket.emit("sendMessage", { userId: name, roomId: room, message }, () =>
+      socket.emit("sendMessage", { username, roomId, message }, () =>
         setMessage("")
       );
     }

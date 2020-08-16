@@ -28,7 +28,13 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-const RoomLinkModal = ({ modalIsOpen, setIsOpen, link, setLink, joinRoom }) => {
+const RoomLinkModal = ({
+  modalIsOpen,
+  setIsOpen,
+  roomId,
+  setroomId,
+  joinRoom,
+}) => {
   function closeModal() {
     setIsOpen(false);
   }
@@ -46,13 +52,13 @@ const RoomLinkModal = ({ modalIsOpen, setIsOpen, link, setLink, joinRoom }) => {
         </span>
         <span className="flex items-center border-b border-sp-green py-2">
           <input
-            value={link}
+            value={roomId}
             onChange={(e) => {
-              setLink(e.target.value);
+              setroomId(e.target.value);
             }}
             className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
             type="text"
-            placeholder="Enter link of room"
+            placeholder="Enter room id"
             aria-label="Full name"
           />
         </span>
