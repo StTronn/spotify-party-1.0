@@ -9,13 +9,13 @@ const TrackCointainer = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 `;
 
-function Content({ playbackObj }) {
+function Content({ playbackObj, creatorName }) {
   console.log("playbackObj", playbackObj);
   return (
     <div className="max-h-full overflow-y-auto px-12 py-6 mt-10">
       <Heading
         title="See What Other's Are Jamming To"
-        subtitle="Rishav's Room"
+        subtitle={creatorName + "'s room"}
       />
 
       <div className=" cardsWrap  mt-4">

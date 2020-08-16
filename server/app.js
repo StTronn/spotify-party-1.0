@@ -50,12 +50,13 @@ io.on("connect", (socket) => {
 
         console.log("created room");
       }
-      socket.emit("joinLink", { roomId: user.id });
+      socket.emit("joinLink", { roomId: user.id, creatorName: user.username });
     }
   });
 
   socket.on("join", async ({ user, roomId }, callback) => {
     const { username, id } = user;
+
     const name = username;
     const findUser = await User.findOne({
       id: id,
@@ -63,16 +64,29 @@ io.on("connect", (socket) => {
     const findRoom = await Room.findOne({
       roomId,
     });
-
+    const roomOwner = await User.findOne({
+      id: roomId,
+    });
     if (findUser && findRoom) {
       console.log("hello room");
       socket.join(roomId);
 
-      socket.emit("joinLink", { roomId });
-      socket.emit("message", {
-        user: "admin",
-        text: `${name}, welcome to ${user.username}'s room .`,
+      socket.emit("joinLink", {
+        roomId,
+        creatorName: roomOwner.username || "All",
       });
+
+      if (id != roomId)
+        socket.emit("message", {
+          user: "admin",
+          text: `${name}, welcome to ${user.username}'s room .`,
+        });
+      else
+        socket.emit("message", {
+          user: "admin",
+          text: `${name}, room created successfully.`,
+        });
+
       socket.broadcast
         .to(roomId)
         .emit("message", { user: "admin", text: `${name} has joined!` });

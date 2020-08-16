@@ -41,9 +41,9 @@ const RoomJoin = () => {
   };
 
   useEffect(() => {
-    socket.on("joinLink", ({ roomId }) => {
-      console.log(roomId);
-      history.push(`/room?room=${roomId}`);
+    socket.on("joinLink", ({ roomId, creatorName }) => {
+      console.log(creatorName);
+      history.push(`/room?roomId=${roomId}&creatorName=${creatorName}`);
     });
   });
 
