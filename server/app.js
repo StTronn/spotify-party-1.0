@@ -56,7 +56,8 @@ io.on("connect", (socket) => {
 
   socket.on("join", async ({ user, roomId }, callback) => {
     const { username, id } = user;
-
+    socket.username = username;
+    socket.roomid = roomId;
     const name = username;
     const findUser = await User.findOne({
       id: id,
@@ -79,12 +80,12 @@ io.on("connect", (socket) => {
       if (id != roomId)
         socket.emit("message", {
           user: "admin",
-          text: `${name}, welcome to ${user.username}'s room .`,
+          text: `${name}, welcome to ${roomOwner.username}'s room .`,
         });
       else
         socket.emit("message", {
           user: "admin",
-          text: `${name}, room created successfully.`,
+          text: `${name}, room created.`,
         });
 
       socket.broadcast
@@ -98,6 +99,26 @@ io.on("connect", (socket) => {
     } else callback({ ok: false, msg: "cannot find room" });
   });
 
+  socket.on("destroyRoom", async ({ user, roomId }) => {
+    const findRoom = await Room.findOne({
+      roomId,
+    });
+    if (findRoom && user.id == roomId) {
+      io.to(roomId).emit("leaveRoom", {
+        text: "the room was destroyed by owner",
+      });
+      io.sockets.clients(roomId).forEach(function (s) {
+        s.leave(roomId);
+      });
+      findRoom.remove();
+    } else if (findRoom) {
+      io.to(roomId).emit("message", {
+        user: "Admin",
+        text: `${user.username} has left.`,
+      });
+    }
+  });
+
   socket.on("sendMessage", ({ username, roomId, message }, callback) => {
     io.to(roomId).emit("message", { username, text: message });
 
@@ -109,18 +130,12 @@ io.on("connect", (socket) => {
 
     callback();
   });
-  socket.on("disconnect", () => {
-    const user = removeUser(socket.id);
-    if (user) {
-      io.to(user.room).emit("message", {
-        user: "Admin",
-        text: `${user.name} has left.`,
-      });
-      io.to(user.room).emit("roomData", {
-        room: user.room,
-        users: getUsersInRoom(user.room),
-      });
-    }
+  socket.on("disconnect", async () => {
+    io.to(socket.roomId).emit("message", {
+      user: "Admin",
+      text: `${socket.username} has left.`,
+    });
+    console.log(socket.username + "has left");
   });
 });
 

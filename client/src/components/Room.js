@@ -83,6 +83,7 @@ const Room = ({ location }) => {
             <Content
               creatorName={creatorName}
               playbackObj={playbackObj ? playbackObj : {}}
+              roomId={roomId}
             ></Content>
           </main>
           <aside className="h-full w-1/4 xl:w-2/8 bg-black text-white overflow-y-auto">
