@@ -49,7 +49,7 @@ const Login = () => {
           <LoginButton className="bg-sp-green mt-8 pt-1 text-base leading-6 font-medium text-white rounded-full text-center">
             <a
               className="w-full flex items-center justify-center"
-              href="http://localhost:8888/login"
+              href={process.env.REACT_APP_ENDPOINT + "login"}
             >
               <FaSpotify />
               &nbsp; Login to Spotify{" "}

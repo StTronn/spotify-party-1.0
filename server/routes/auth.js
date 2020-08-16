@@ -4,9 +4,13 @@ const router = Router();
 import User from "../models/user"; // "Request" library
 import querystring from "querystring"; // "Request" library
 import request from "request"; // "Request" library
-var client_id = "3644941566b1453299ab48681726e52f"; // Your client id
-var client_secret = "f8a09652cad24e888c8dc7a47382b576"; // Your secret
-var redirect_uri = "http://localhost:8888/callback"; // Your redirect uri
+import dotenv from "dotenv";
+dotenv.config();
+var client_id = process.env.CLIENT_ID + ""; // Your client id
+var client_secret = process.env.CLIENT_SECRET + ""; // Your secret
+console.log(process.env.REDIRECT_URI + "");
+var redirect_uri = process.env.REDIRECT_URI + ""; // Your redirect uri
+var clientUri = "http://localhost:3000/#";
 
 /**
  * Generates a random string containing numbers and letters
@@ -54,7 +58,7 @@ router.get("/callback", async (req, res) => {
 
   if (state === null || state !== storedState) {
     res.redirect(
-      "http://localhost:3000/#" +
+      clientUri +
         querystring.stringify({
           error: "state_mismatch",
         })
@@ -109,7 +113,7 @@ router.get("/callback", async (req, res) => {
 
           // we can also pass the token to the browser to make requests from there
           res.redirect(
-            "http://localhost:3000/#" +
+            clientUri +
               querystring.stringify({
                 access_token: access_token,
                 expires_in,
@@ -121,7 +125,7 @@ router.get("/callback", async (req, res) => {
         });
       } else {
         res.redirect(
-          "http:localhost:3000/#" +
+          clientUri +
             querystring.stringify({
               error: "invalid_token",
             })

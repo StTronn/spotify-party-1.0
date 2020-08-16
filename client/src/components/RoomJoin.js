@@ -23,8 +23,7 @@ const RoomJoin = () => {
   const { user } = state;
   console.log(user);
   useEffect(() => {
-    const ENDPOINT = "http://localhost:8888/";
-    socket = io(ENDPOINT);
+    socket = io(process.env.REACT_APP_ENDPOINT);
   }, []);
 
   const openModal = () => {

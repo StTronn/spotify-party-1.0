@@ -17,7 +17,7 @@ const Room = ({ location }) => {
   const [username, setUserName] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const ENDPOINT = "http://localhost:8888/";
+  const ENDPOINT = process.env.REACT_APP_ENDPOINT;
 
   useEffect(() => {
     const parse = queryString.parse(location.search);

@@ -9,7 +9,6 @@
 
 import express from "express";
 import cors from "cors";
-import { v4 as uuidv4 } from "uuid";
 import cookieParser from "cookie-parser";
 import auth from "./routes/auth";
 import User from "./models/user";
@@ -17,7 +16,6 @@ import Room from "./models/room";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import socketio from "socket.io";
-const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
 dotenv.config();
 console.log(process.env.CLIENT_ID + "");
 
