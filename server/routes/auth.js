@@ -10,7 +10,7 @@ var client_id = process.env.CLIENT_ID + ""; // Your client id
 var client_secret = process.env.CLIENT_SECRET + ""; // Your secret
 console.log(process.env.REDIRECT_URI + "");
 var redirect_uri = process.env.REDIRECT_URI + ""; // Your redirect uri
-var clientUri = "http://localhost:3000/#";
+var clientUri = process.env.CLIENT_URI + "";
 
 /**
  * Generates a random string containing numbers and letters

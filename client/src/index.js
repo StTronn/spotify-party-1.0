@@ -5,6 +5,8 @@ import App from "./App";
 import { StoreProvider } from "./Store";
 import "./tailwind.output.css";
 import * as serviceWorker from "./serviceWorker";
+import dotenv from "dotenv";
+dotenv.config();
 
 ReactDOM.render(
   <React.StrictMode>
