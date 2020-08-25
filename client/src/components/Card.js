@@ -11,7 +11,7 @@ const Image = styled.img`
 function Card({ songInformation }) {
   if (songInformation)
     return (
-      <a href={"/#"}>
+      <>
         <div className="card">
           <div className="cardImage">
             <img src={songInformation.item.album.images[0].url} alt="Pic 1" />
@@ -32,7 +32,7 @@ function Card({ songInformation }) {
             </span>
           </div>
         </div>
-      </a>
+      </>
     );
   return <></>;
 }
