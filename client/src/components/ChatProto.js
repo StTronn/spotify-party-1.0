@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Message from "./Message";
 
 const ChatProto = ({ messages, message, setMessage, sendMessage }) => {
   console.log("messages", messages);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToBottom, [messages]);
+
   const handleEnter = (e) => {
     if (e.key === "Enter") {
       sendMessage(e);
@@ -28,6 +36,7 @@ const ChatProto = ({ messages, message, setMessage, sendMessage }) => {
             <Message message={item} key={i} />
           ))}
         </div>
+        <div ref={messagesEndRef} />
       </div>
       {/* MESSAGE INPUT AREA */}
       <div
