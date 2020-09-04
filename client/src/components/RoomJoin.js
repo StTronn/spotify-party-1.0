@@ -47,31 +47,31 @@ const RoomJoin = () => {
   });
 
   return (
-    <div className="bg-sp-gray-dark">
+    <div className="bg-sp-gray-dark overflow-x-hidden">
       <div
         className=" bg-sp-green	bg-left-top bg-auto bg-repeat-x"
         style={{ height: "50vh", width: "100vw" }}
       ></div>
-      <div className="-mt-64 ">
+      <div className="md:-mt-64 -mt-48 ">
         <div className="w-full text-center">
-          <h2 className="font-bold text-6xl text-white">
+          <h2 className="font-bold md:text-6xl text-3xl text-white">
             Get The Party Started !
           </h2>
         </div>
-        <div className="mx-40 grid grid-cols-2 gap-2 px-auto sm:grid-cols-2">
+        <div className=" xl:mx-40 lg:mx-32  grid md:grid-cols-2 md:gap-2 px-auto sm:grid-cols-1">
           <div className="p-8 sm:p-8 text-center cursor-pointer text-white">
             <div
               onClick={openModal}
-              className="py-40 max-w-sm mx-auto rounded overflow-hidden shadow-lg bg-sp-gray-light hover:bg-sp-gray-highlight transition duration-500"
+              className=" py-20 md:py-40 min-w-32 max-w-sm mx-auto rounded overflow-hidden shadow-lg bg-sp-gray-light hover:bg-sp-gray-highlight transition duration-500"
               style={{ borderRadius: "10px", width: "" }}
             >
-              <div className="space-y-10">
+              <div className=" md:space-y-10">
                 <i
                   className="fa fa-head-side-mask"
                   style={{ fontSize: "48px" }}
                 />
-                <div className="px-6 py-2">
-                  <div className="space-y-3">
+                <div className="px-6 md:py-2">
+                  <div className=" md:space-y-3">
                     <div className="font-bold text-3xl text-sp-green mb-2">
                       Join Room
                     </div>
@@ -86,12 +86,12 @@ const RoomJoin = () => {
           <div className="p-8 sm:p-8 text-center cursor-pointer translate-x-2">
             <div
               onClick={createRoom}
-              className="py-40 max-w-sm mx-auto rounded overflow-hidden bg-sp-gray-light shadow-lg hover:bg-sp-gray-highlight transition duration-500 text-white  "
+              className="py-20 md:py-40 min-w-32 max-w-sm mx-auto rounded overflow-hidden shadow-lg bg-sp-gray-light hover:bg-sp-gray-highlight transition duration-500 "
               style={{ borderRadius: "10px" }}
             >
-              <div className="space-y-10">
+              <div className="md:space-y-10">
                 <i className="fa fa-swimmer" style={{ fontSize: "48px" }} />
-                <div className="px-6 py-2">
+                <div className="px-6 md:py-2">
                   <div className="space-y-3">
                     <div className="font-bold text-3xl mb-2 ">Create Room</div>
                     <div className="grid justify-center">
