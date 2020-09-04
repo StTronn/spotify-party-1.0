@@ -9,7 +9,7 @@ const Image = styled.img`
 `;
 
 function Card({ songInformation }) {
-  if (songInformation)
+  if (songInformation && songInformation.item.album)
     return (
       <>
         <div className="card">

@@ -9,6 +9,8 @@ const Cointainer = styled.div`
   height: 100vh;
   grid-template-rows: 8vh 1fr;
   align-items: center;
+  @media screen and (max-width: 550px) {
+  }
 `;
 
 const MainCointainer = styled.div`
@@ -27,11 +29,9 @@ const LoginButton = styled.div`
 const Login = () => {
   return (
     <Cointainer className="bg-sp-gray-dark">
-      <div>
-        <h1> Nav </h1>
-      </div>
+      <div></div>
 
-      <MainCointainer className="px-20">
+      <MainCointainer className="px-4 lg:px-32 md:px-20">
         <span>
           <h2 className="text-4xl tracking-tight leading-10 font-extrabold text-sp-green sm:text-5xl sm:leading-none md:text-6xl">
             <TextLoop interval={3000}>
