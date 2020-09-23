@@ -23,7 +23,6 @@ const Room = ({ location }) => {
     const parse = queryString.parse(location.search);
     const username = user.username || "tronn007";
     setCreatorName(parse.creatorName || "");
-    console.log(parse.creatorName, "user", user.username);
     const roomId = parse.roomId || "All";
     socket = io(ENDPOINT);
 
@@ -39,7 +38,7 @@ const Room = ({ location }) => {
     spotifyApi.setAccessToken(user.token);
     window.setInterval(() => {
       spotifyApi.getMyCurrentPlaybackState().then((response) => {
-        const newPlaybackObj = { [user.id]: response };
+        const newPlaybackObj = { [user.id]: [response, user.username] };
         socket.emit(
           "sendPlaybackState",
           { newPlaybackObj, roomId: roomId },

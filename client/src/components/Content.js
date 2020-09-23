@@ -10,7 +10,6 @@ const TrackCointainer = styled.div`
 `;
 
 function Content({ playbackObj, creatorName, roomId }) {
-  console.log("playbackObj", playbackObj);
   return (
     <div className="max-h-full overflow-y-auto px-12 py-6 mt-10">
       <Heading
@@ -22,7 +21,7 @@ function Content({ playbackObj, creatorName, roomId }) {
       <div className=" cardsWrap  mt-4">
         <div className="cardsWrapInner">
           {Object.entries(playbackObj).map((item) => (
-            <Card songInformation={item[1]} />
+            <Card user={item[1][1]} songInformation={item[1][0]} />
           ))}
         </div>
       </div>

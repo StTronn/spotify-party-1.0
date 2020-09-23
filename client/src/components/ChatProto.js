@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import Message from "./Message";
 
 const ChatProto = ({ messages, message, setMessage, sendMessage }) => {
-  console.log("messages", messages);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {

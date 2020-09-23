@@ -8,7 +8,7 @@ const Image = styled.img`
   object-fit: cover;
 `;
 
-function Card({ songInformation }) {
+function Card({ user, songInformation }) {
   if (songInformation && songInformation.item.album)
     return (
       <>
@@ -30,6 +30,8 @@ function Card({ songInformation }) {
                   }`
               )}
             </span>
+
+            <p className=" mt-2 mt-0 text-sp-green text-xs">{user}</p>
           </div>
         </div>
       </>

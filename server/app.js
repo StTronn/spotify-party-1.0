@@ -48,6 +48,7 @@ io.on("connect", (socket) => {
 
         console.log("created room");
       }
+      socket.roomId = user.id;
       socket.emit("joinLink", { roomId: user.id, creatorName: user.username });
     }
   });
@@ -68,6 +69,7 @@ io.on("connect", (socket) => {
     });
     if (findUser && findRoom) {
       console.log("hello room");
+      socket.roomId = roomId;
       socket.join(roomId);
 
       socket.emit("joinLink", {
@@ -129,10 +131,12 @@ io.on("connect", (socket) => {
     callback();
   });
   socket.on("disconnect", async () => {
-    io.to(socket.roomId).emit("message", {
-      user: "Admin",
-      text: `${socket.username} has left.`,
-    });
+    console.log(socket.roomId);
+    if (socket.roomId && socket.username)
+      io.to(socket.roomId).emit("message", {
+        user: "Admin",
+        text: `${socket.username} has left.`,
+      });
     console.log(socket.username + "has left");
   });
 });

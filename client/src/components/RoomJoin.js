@@ -86,14 +86,16 @@ const RoomJoin = () => {
           <div className="p-8 sm:p-8 text-center cursor-pointer translate-x-2">
             <div
               onClick={createRoom}
-              className="py-20 md:py-40 min-w-32 max-w-sm mx-auto rounded overflow-hidden shadow-lg bg-sp-gray-light hover:bg-sp-gray-highlight transition duration-500 "
+              className="py-20 text-white md:py-40 min-w-32 max-w-sm mx-auto rounded overflow-hidden shadow-lg bg-sp-gray-light hover:bg-sp-gray-highlight transition duration-500 "
               style={{ borderRadius: "10px" }}
             >
               <div className="md:space-y-10">
                 <i className="fa fa-swimmer" style={{ fontSize: "48px" }} />
                 <div className="px-6 md:py-2">
                   <div className="space-y-3">
-                    <div className="font-bold text-3xl mb-2 ">Create Room</div>
+                    <div className="font-bold text-white text-3xl mb-2 ">
+                      Create Room
+                    </div>
                     <div className="grid justify-center">
                       <FaPlusCircle size={32} />
                     </div>
