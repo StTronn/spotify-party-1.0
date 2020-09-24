@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import BottomNav from "./BottomNav";
 import Chat from "./ChatProto";
 import Content from "./Content";
 import queryString from "query-string";
@@ -12,6 +13,7 @@ const Room = ({ location }) => {
   const { user, spotifyApi } = state;
   const [roomId, setRoomId] = useState("");
   const [users, setUsers] = useState("");
+  const [chatOpen, setChatOpen] = useState(false);
   const [creatorName, setCreatorName] = useState("");
   const [playbackObj, setPlaybackObj] = useState({});
   const [username, setUserName] = useState("");
@@ -74,18 +76,27 @@ const Room = ({ location }) => {
       );
     }
   };
+  const chatClass =
+    !chatOpen && window.innerWidth < 768
+      ? "hidden h-full md:col-start-4 md:col-end-4 bg-black text-white overflow-y-auto"
+      : "h-full md:col-start-4 md:col-end-4 bg-black text-white overflow-y-auto";
+  const contentClass =
+    chatOpen && window.innerWidth < 768
+      ? "hidden h-full md:col-start-1 md:col-end-4  bg-sp-gray-light text-white"
+      : " h-full md:col-start-1 md:col-end-4  bg-sp-gray-light text-white";
+
   return (
     <div className="outerContainer">
       <div className="max-w-full w-full h-screen overflow-hidden">
         <div className="grid sm:grid-cols-1 md:grid-cols-4 h-full w-full aside-container">
-          <main className=" h-full md:col-start-1 md:col-end-4  bg-sp-gray-light text-white">
+          <main className={contentClass}>
             <Content
               creatorName={creatorName}
               playbackObj={playbackObj ? playbackObj : {}}
               roomId={roomId}
             ></Content>
           </main>
-          <aside className="h-full md:col-start-4 md:col-end-4 bg-black text-white overflow-y-auto">
+          <aside className={chatClass}>
             <Chat
               messages={messages}
               message={message}
@@ -95,6 +106,7 @@ const Room = ({ location }) => {
           </aside>
         </div>
       </div>
+      <BottomNav chatOpen={chatOpen} setChatOpen={setChatOpen} />
     </div>
   );
 };

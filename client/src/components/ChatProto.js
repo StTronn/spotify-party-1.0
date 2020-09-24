@@ -15,12 +15,13 @@ const ChatProto = ({ messages, message, setMessage, sendMessage }) => {
       sendMessage(e);
     }
   };
+  const bottom = window.innerWidth < 768 ? "53px" : "0px";
   return (
     <div>
       <div>
         {/* HEADING */}
         <div
-          className=" bg-sp-gray-dark  h-16 w-1/4 xl:w-2/8 text-center pt-2 text-white flex justify-between "
+          className=" bg-sp-gray-dark  h-16 w-full md:w-1/4 xl:w-2/8 text-center pt-2 text-white flex justify-between "
           style={{ top: "0px", position: "fixed" }}
         >
           {/* back button */}
@@ -39,11 +40,11 @@ const ChatProto = ({ messages, message, setMessage, sendMessage }) => {
       </div>
       {/* MESSAGE INPUT AREA */}
       <div
-        className="flex absolute w-1/4 xl:w-2/8  bg-sp-gray-light items-center border-b-2 border-sp-green py-2"
-        style={{ bottom: "0px" }}
+        style={{ bottom }}
+        className="flex absolute w-full md:w-1/4 xl:w-2/8  bg-sp-gray-light items-center border-b-2 border-sp-green py-2 md:bottom-0"
       >
         <input
-          className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
+          className="appearance-none bg-transparent border-none w-full  md:mb-0 text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
           rows={1}
           placeholder="say something"
           style={{ outline: "none" }}

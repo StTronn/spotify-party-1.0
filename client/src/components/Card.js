@@ -12,7 +12,7 @@ function Card({ user, songInformation }) {
   if (songInformation && songInformation.item.album)
     return (
       <>
-        <div className="card">
+        <div style={{ maxWidth: "200px" }} className="card md:max-w-md">
           <div className="cardImage">
             <img src={songInformation.item.album.images[0].url} alt="Pic 1" />
           </div>
