@@ -77,15 +77,15 @@ const Room = ({ location }) => {
   return (
     <div className="outerContainer">
       <div className="max-w-full w-full h-screen overflow-hidden">
-        <div className="flex flex-wrap h-full w-full aside-container">
-          <main className="flex flex-col h-full w-3/4 xl:w-6/8 bg-sp-gray-light text-white">
+        <div className="grid sm:grid-cols-1 md:grid-cols-4 h-full w-full aside-container">
+          <main className=" h-full md:col-start-1 md:col-end-4  bg-sp-gray-light text-white">
             <Content
               creatorName={creatorName}
               playbackObj={playbackObj ? playbackObj : {}}
               roomId={roomId}
             ></Content>
           </main>
-          <aside className="h-full w-1/4 xl:w-2/8 bg-black text-white overflow-y-auto">
+          <aside className="h-full md:col-start-4 md:col-end-4 bg-black text-white overflow-y-auto">
             <Chat
               messages={messages}
               message={message}
