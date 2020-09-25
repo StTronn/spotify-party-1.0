@@ -31,7 +31,7 @@ const ChatProto = ({ messages, message, setMessage, sendMessage }) => {
           {/* 3 dots */}
         </div>
         {/* MESSAGES */}
-        <div className="mt-20 mb-16 h-50 overflow-auto">
+        <div className="mt-20 mb-24 md:mb-12 h-50 overflow-auto">
           {messages.map((item, i) => (
             <Message message={item} key={i} />
           ))}
@@ -41,7 +41,7 @@ const ChatProto = ({ messages, message, setMessage, sendMessage }) => {
       {/* MESSAGE INPUT AREA */}
       <div
         style={{ bottom }}
-        className="flex absolute w-full md:w-1/4 xl:w-2/8  bg-sp-gray-light items-center border-b-2 border-sp-green py-2 md:bottom-0"
+        className="flex fixed w-full md:w-1/4 xl:w-2/8  bg-sp-gray-light items-center border-b-2 border-sp-green py-2 md:bottom-0"
       >
         <input
           className="appearance-none bg-transparent border-none w-full  md:mb-0 text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
