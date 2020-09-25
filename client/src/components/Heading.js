@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import ShareLinkModal from "./ShareLinkModal";
+import { useHistory } from "react-router-dom";
 import { FaTimes, FaShareAlt } from "react-icons/fa";
 
 function Heading({ title, subtitle, roomId }) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const history = useHistory();
 
   const openModal = () => {
     setIsOpen(true);
@@ -19,9 +21,18 @@ function Heading({ title, subtitle, roomId }) {
       <div className="flex flex-col h-full w-1/2 justify-start">
         <span className="grid justify-end">
           <span className="grid grid-cols-2 w-16 pt-6 justify-end">
-            <FaTimes size={17} textAnchor="middle" alignmentBaseline="middle" />
+            <FaTimes
+              onClick={() => {
+                history.push(`/`);
+              }}
+              style={{ cursor: "pointer" }}
+              size={17}
+              textAnchor="middle"
+              alignmentBaseline="middle"
+            />
             <FaShareAlt
               onClick={openModal}
+              style={{ cursor: "pointer" }}
               size={15}
               textAnchor="middle"
               alignmentBaseline="middle"

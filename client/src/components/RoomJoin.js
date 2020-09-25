@@ -52,7 +52,7 @@ const RoomJoin = () => {
         className=" bg-sp-green	bg-left-top bg-auto bg-repeat-x"
         style={{ height: "50vh", width: "100vw" }}
       ></div>
-      <div className="md:-mt-64 -mt-48 ">
+      <div className="md:-mt-64 -mt-64 ">
         <div className="w-full text-center">
           <h2 className="font-bold md:text-6xl text-3xl text-white">
             Get The Party Started !
