@@ -9,7 +9,7 @@ const Image = styled.img`
 `;
 
 function Card({ user, songInformation }) {
-  if (songInformation && songInformation.item.album)
+  if (songInformation && songInformation.item)
     return (
       <>
         <div style={{ maxWidth: "200px" }} className="card md:max-w-md">
