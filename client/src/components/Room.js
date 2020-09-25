@@ -87,7 +87,7 @@ const Room = ({ location }) => {
 
   return (
     <div className="outerContainer">
-      <div className="max-w-full w-full h-screen overflow-hidden">
+      <div className="max-w-full w-full h-screen ">
         <div className="grid sm:grid-cols-1 md:grid-cols-4 h-full w-full aside-container">
           <main className={contentClass}>
             <Content
