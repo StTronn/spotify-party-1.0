@@ -41,6 +41,7 @@ function App() {
     console.log(user.expires_in > moment());
     if (user && moment(user.expires_in) < moment()) {
       localStorage.removeItem("user");
+        window.location.reload();
     }
     if (token && username && !user) {
       const time = moment().add(1, "hour");
