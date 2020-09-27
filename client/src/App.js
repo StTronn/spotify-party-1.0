@@ -35,13 +35,13 @@ function App() {
   const { state, dispatch } = useContext(Store);
   const { user } = state;
   const params = getHashParams();
-  const { access_token, username, id } = params;
+  const { access_token, username, id, refresh_token } = params;
   const token = access_token;
   useEffect(() => {
     console.log(user.expires_in > moment());
     if (user && moment(user.expires_in) < moment()) {
       localStorage.removeItem("user");
-        window.location.reload();
+      window.location.reload();
     }
     if (token && username && !user) {
       const time = moment().add(1, "hour");
@@ -50,6 +50,7 @@ function App() {
         payload: {
           username,
           token,
+          refresh_token,
           id,
           expires_in: time,
         },

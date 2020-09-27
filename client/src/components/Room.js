@@ -39,14 +39,20 @@ const Room = ({ location }) => {
 
     spotifyApi.setAccessToken(user.token);
     window.setInterval(() => {
-      spotifyApi.getMyCurrentPlaybackState().then((response) => {
-        const newPlaybackObj = { [user.id]: [response, user.username] };
-        socket.emit(
-          "sendPlaybackState",
-          { newPlaybackObj, roomId: roomId },
-          () => console.log("")
-        );
-      });
+      spotifyApi
+        .getMyCurrentPlaybackState()
+        .then((response) => {
+          const newPlaybackObj = { [user.id]: [response, user.username] };
+          socket.emit(
+            "sendPlaybackState",
+            { newPlaybackObj, roomId: roomId },
+            () => console.log("")
+          );
+        })
+        .catch((err) => {
+          //refresh token
+          window.location.reload();
+        });
     }, 8000);
   }, [ENDPOINT, location.search]);
 
