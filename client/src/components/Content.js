@@ -7,7 +7,7 @@ function Content({ playbackObj, creatorName, roomId }) {
   return (
     <div className="max-h-full overflow-y-auto px-12 py-6 mt-10 overflow-auto">
       <Heading
-        title="See What Other's Are Jamming To"
+        title="See What Other's are Jamming To"
         subtitle={creatorName + "'s room"}
         roomId={roomId}
       />
